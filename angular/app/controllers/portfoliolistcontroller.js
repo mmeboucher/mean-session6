@@ -4,7 +4,9 @@
 
 		$scope.new_album = {};
 		$scope.add_portfolio_error = "";
-		$scope.page_not_found = "page not found";
+		$scope.page_not_found = "Page Not Found";
+	$scope.picture1 = "app/partials/drunkenPirate_avatar.png";
+
 
 		$scope.portfolios = [
 		{name: 'vessel1309', title: 'Call of Booty', date: '2013-09-01', description: 'Arrrgh mateys! This be the finest vessel sailing these seas that yer eyes ever laid sight on. Arrrgh.', imageurl: 'images/drunkenPirate_thumb3.png' },
