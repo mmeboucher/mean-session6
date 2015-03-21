@@ -1,0 +1,144 @@
+<html ng-app>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<script type="text/javascript" src="js/angular.min.1.2.10.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.2.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<style type="text/css">
+	body { padding:50px; }
+	.panel-primary, .panel-default { width:30%; float:left; margin-right:2%; min-height:180px;}
+	.cl { clear:both; }
+	input[type=text], textarea {
+		padding: 3px;
+		border-radius: 4px;
+		border: 1px solid rgba(0,0,0,0.2)
+	}
+	textarea { width: 100%; }
+
+	</style>
+
+</head>
+<body>
+<div style="float: right" ng-include="'partials/user_partial.html'"></div>
+
+
+	<div ng-controller="PortfolioListController">
+		<input type="text" placeholder="Search..." ng-model="searchFor" size="20" style="display:block; margin:20px" />
+		<div class="panel panel-primary" ng-repeat="portfolio in portfolios  | filter: { title: searchFor } ">
+			<div class="panel-heading">
+				{{ portfolio.title }} {{ portfolio.date }}
+			</div>
+			<div class="panel-body">
+				{{ portfolio.description }}
+			</div>
+		</div>
+
+		<div class="cl">
+			<h3>Add a Portfolio</h3>
+			<div class="panel panel-default">
+				<div class="alert alert-danger" ng-show="add_portfolio_error">
+					{{add_portfolio_error}}
+				</div>
+				<form name="add_portfolio_form" novalidate>
+					<div class="panel-heading">
+						<input type="text" placeholder="title" size="20" ng-model="adding_portfolio.title" />
+						<div style="float:right">
+							<input 
+							type="text" 
+							placeholder="yyyy/mm/dd" 
+							size="10" 
+							ng-model="adding_portfolio.date" />
+						</div>
+					</div>
+					<div class="panel-body">
+						<textarea placeholder="description" rows="4" ng-model="adding_portfolio.description" ></textarea>
+						<input type="text" placeholder="name" size="10" ng-model="adding_portfolio.name" />
+						<input type="text" placeholder="image url" size="20" ng-model="adding_portfolio.imageurl" />
+					</div>
+					<button ng-click="addPortfolio(adding_portfolio)" class="btn btn-success">Add Portfolio</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<p class="cl">There are {{ portfolios.length }} portfolios available.</p>
+
+	<script type="text/javascript">
+	function PortfolioListController( $scope ){
+
+		$scope.new_album = {};
+		$scope.add_portfolio_error = "";
+
+		$scope.portfolios = [
+		{name: 'vessel1309', title: 'Call of Booty', date: '2013-09-01', description: 'Arrrgh mateys! This be the finest vessel sailing these seas that yer eyes ever laid sight on. Arrrgh.', imageurl: 'images/drunkenPirate_thumb3.png' },
+
+		{name: 'innocents1404', title: 'The Sack of the Innocents', date: '2014-04-15', description: 'This be a detail of the sacking of the innocents where I played an important role as business analyst and in implementation.', imageurl: 'images/drunkenPirate_thumb2.png' },
+
+		{name: 'firstmate1210', title: 'Pipe and First Mate', date: '2012-10-01', description: 'After a hard day of lootin\' and shootin\' I like to relax with my best mates and tally up the days booty.', imageurl: 'images/drunkenPirate_thumb1.png' }
+		];
+
+		$scope.addPortfolio = function( new_portfolio ){
+			if (!new_portfolio.title) 
+			{
+				$scope.add_portfolio_error = "Missing title";
+			}
+			else if (!new_portfolio.date || !is_valid_date(new_portfolio.date))
+			{
+				$scope.add_portfolio_error = "You must provide a date in format yyyy/mm/dd";
+			}
+			else if (!new_portfolio.description)
+			{
+				$scope.add_portfolio_error = "Missing description";
+			}
+			else if (!new_portfolio.name)
+			{
+				$scope.add_portfolio_error = "Missing name - six characters";
+			}
+			else {
+				$scope.portfolios.push( new_portfolio );
+				$scope.adding_portfolio = {};
+				$scope.add_portfolio_error = "";
+			};
+		};
+	};
+
+	function is_valid_date (the_date){
+		//http://eloquentjavascript.net/09_regexp.html
+		if (the_date.match(/^[0-9]{4,4}\/[0-9]{2,2}\/[0-9]{2,2}$/)){
+			var d = new Date(the_date);
+			return !(isNaN(d.getTime()));
+		} else {
+			return false;
+		};
+	};
+
+	function UserController ($scope) {
+		$scope.user = { username: "Daniel" };
+	};
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
